@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import './App.scss';
 import abi from './Utils/WavePortal.json';
 import Button from './Button';
-import LoadingSpinner from './LoadingSpinner';
 
 function App() {
 	/*
@@ -15,6 +14,17 @@ function App() {
 
 	const contractAddress = "0x8b3de83dfb9b49c810c6792acb43d265bf8d68c2";
 	const contractABI = abi.abi;
+
+	useEffect(() => {
+		checkIfWalletIsConnected();
+	}, [])
+
+	useEffect(() => {
+		if(currentAccount !== "") {
+			getWaveCount();
+		}	
+		// eslint-disable-next-line
+	}, [currentAccount])
 	
 	const checkIfWalletIsConnected = async () => {
 		try {
@@ -35,7 +45,7 @@ function App() {
 			if (accounts.length !== 0) {
 				const account = accounts[0];
 				console.log("Found an authorized account:", account);
-				setCurrentAccount(account)
+				setCurrentAccount(account);
 			} else {
 				console.log("No authorized account found")
 			}
@@ -119,10 +129,7 @@ function App() {
 		}
 	}
 	
-	useEffect(() => {
-		checkIfWalletIsConnected();
-		getWaveCount();
-	}, [])
+
 
 	return (
 		<div className="App">
