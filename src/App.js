@@ -10,9 +10,11 @@ function App() {
 	*/
 	const [currentAccount, setCurrentAccount] = useState("");
 	const [waveCount, setWaveCount] = useState(0);
+	const [allWaves, setAllWaves] = useState([]);
 	const [isLoading, setLoading] = useState(false);
+	const [message, setMessage] = useState("");
 
-	const contractAddress = "0x8b3de83dfb9b49c810c6792acb43d265bf8d68c2";
+	const contractAddress = "0xE872eba6bC57AeD126a426DC45ABb1d365B49e48";
 	const contractABI = abi.abi;
 
 	useEffect(() => {
@@ -22,9 +24,50 @@ function App() {
 	useEffect(() => {
 		if(currentAccount !== "") {
 			getWaveCount();
+			getAllWaves();
 		}	
 		// eslint-disable-next-line
-	}, [currentAccount])
+	}, [currentAccount, waveCount])
+
+	const getAllWaves = async () => {
+		try {
+		  const { ethereum } = window;
+		  if (ethereum) {
+			const provider = new ethers.providers.Web3Provider(ethereum);
+			const signer = provider.getSigner();
+			const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+	
+			/*
+			 * Call the getAllWaves method from your Smart Contract
+			 */
+			const waves = await wavePortalContract.getAllWaves();
+			
+	
+			/*
+			 * We only need address, timestamp, and message in our UI so let's
+			 * pick those out
+			 */
+			let wavesCleaned = [];
+			waves.forEach(wave => {
+			  wavesCleaned.push({
+				address: wave.waver,
+				timestamp: new Date(wave.timestamp * 1000),
+				message: wave.message
+			  });
+			});
+	
+			/*
+			 * Store our data in React State
+			 */
+			console.log('Got Waves', wavesCleaned)
+			setAllWaves(wavesCleaned.reverse());
+		  } else {
+			console.log("Ethereum object doesn't exist!")
+		  }
+		} catch (error) {
+		  console.log(error);
+		}
+	  }
 	
 	const checkIfWalletIsConnected = async () => {
 		try {
@@ -91,7 +134,8 @@ function App() {
 				/*
 				* Execute the actual wave from your smart contract
 				*/
-				const waveTxn = await wavePortalContract.wave();
+				const waveTxn = await wavePortalContract.wave(message);
+				setMessage("")
 				console.log("Mining...", waveTxn.hash);
 		
 				await waveTxn.wait();
@@ -145,13 +189,26 @@ function App() {
 				)}
 			</div>
 			<div>
-				
-				<div>Wave count: {waveCount}</div>
-				<div>
+								<div className="app__inputContainer">
+					<input value={message} onChange={(e) => setMessage(e.target.value)} className="app__input" placeholder="Say Hi!"/>
+				</div>
+				<div className="app__buttonContainer">
 					<Button className="button" disabled={!currentAccount} onClick={wave} isLoading={isLoading}>
 						Wave
 					</Button>
 				</div>
+			</div>
+			<div>
+			<div>Wave count: {waveCount}</div>
+			{allWaves.map((wave, index) => {
+					return (
+						<div key={index} className="app__waves">
+							<div>Address: {wave.address}</div>
+							<div>Time: {wave.timestamp.toString()}</div>
+							<div>Message: <span className="app__waveMessage">{wave.message}</span></div>
+						</div>
+					)
+				})}
 			</div>
 				<div>
 					Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
