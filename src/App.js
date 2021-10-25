@@ -19,13 +19,12 @@ function App() {
 
 	useEffect(() => {
 		checkIfWalletIsConnected();
-		getAllWaves();
-		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
 		if(currentAccount !== "") {
-			getWaveCount();		
+			getWaveCount();
+			getAllWaves();		
 		}	
 		// eslint-disable-next-line
 	}, [currentAccount])
