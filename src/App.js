@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from "ethers";
-import './App.css';
+import './App.scss';
 import abi from './Utils/WavePortal.json';
+import Button from './Button';
+import LoadingSpinner from './LoadingSpinner';
 
 function App() {
 	/*
 	* Just a state variable we use to store our user's public wallet.
 	*/
 	const [currentAccount, setCurrentAccount] = useState("");
-	const [waveCount, setWaveCount] = useState(0)
+	const [waveCount, setWaveCount] = useState(0);
+	const [isLoading, setLoading] = useState(false);
 
 	const contractAddress = "0x8b3de83dfb9b49c810c6792acb43d265bf8d68c2";
 	const contractABI = abi.abi;
@@ -63,6 +66,7 @@ function App() {
 	}
 
 	const wave = async () => {
+		setLoading(true);
 		try {
 			const { ethereum } = window;
 		
@@ -92,6 +96,7 @@ function App() {
 		} catch (error) {
 		  	console.log(error)
 		}
+		setLoading(false);
 	}
 
 	const getWaveCount = async () => {
@@ -121,23 +126,31 @@ function App() {
 
 	return (
 		<div className="App">
-			<header className="App-header">
+			<div className="app__title">
 				<img src={'https://ethereum.org/static/6b935ac0e6194247347855dc3d328e83/31987/eth-diamond-black.png'} className="App-logo" alt="logo" />
 				AJ's Wave Portal Frontend!
-				
-				<div>Wave count: {waveCount}</div>
-				<button onClick={wave}>Wave</button>
-				<div>
-				Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
-				</div>
 				{!currentAccount && (
 					<div>
-						<button onClick={connectWallet}>
+						<Button className="button" onClick={connectWallet}>
 							Connect
-						</button>
+						</Button>
 					</div>
 				)}
-			</header>
+			</div>
+			<div>
+				
+				<div>Wave count: {waveCount}</div>
+				<div>
+					<Button className="button" disabled={!currentAccount} onClick={wave} isLoading={isLoading}>
+						Wave
+					</Button>
+				</div>
+			</div>
+				<div>
+					Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
+				</div>
+				
+			
 			
 		</div>
 	);

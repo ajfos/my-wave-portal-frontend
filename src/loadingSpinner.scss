@@ -1,0 +1,96 @@
+
+.loadingSpinner {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    position: relative;
+    animation: rotate 1.1s infinite linear;
+    border-color: inherit;
+}
+
+.loadingSpinner__track {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 20px;
+    text-indent: -9999em;
+    border: 3px solid;
+
+    opacity: 0.3;
+}
+
+.loadingSpinner__handle {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 20px;
+    text-indent: -9999em;
+    border-top: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-left: 3px solid;
+    border-left-color: inherit;
+}
+
+.loadingSpinner--small {
+    width: 24px;
+    height: 24px;
+
+    .loadingSpinner__track {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+    }
+
+    .loadingSpinner__handle {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+    }
+}
+
+.loadingSpinner--large {
+    width: 50px;
+    height: 50px;
+
+    .loadingSpinner__track {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+
+    .loadingSpinner__handle {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+}
+
+.loadingSpinner--xlarge {
+    width: 150px;
+    height: 150px;
+
+    .loadingSpinner__track {
+        width: 150px;
+        height: 150px;
+        border-width: 3px;
+    }
+
+    .loadingSpinner__handle {
+        width: 150px;
+        height: 150px;
+        border-width: 3px;
+    }
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

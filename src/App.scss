@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-logo {
+  height: 10vmin;
+  pointer-events: none;
+}
+
+
+.App-link {
+  color: #61dafb;
+}
+
+.button {
+  width: 100%;
+  min-width: 100px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  color: white;
+  border: 1px solid white;
+  padding: 0 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  perspective: 500px;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  text-decoration: none;
+  font-weight: 400;
+  margin: 0;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 34px;
+  font-size: 24px;
+  padding: 0 15px;
+  background-color: #22b2da;
+  font-family: 'Permanent Marker', cursive;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+.button:hover {
+  background-color: #00acdbce;
+}
+
+.app__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button__disabled {
+  background-color: grey;
+}
+
+.button__disabled:hover {
+  background-color: grey;
+}
+
+.button__loadingSpinner {
+  padding: 5px 0 0 15px;
+  position: absolute;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button__text {
+  transform: translateY(-2px);
+}
