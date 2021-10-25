@@ -14,20 +14,52 @@ function App() {
 	const [isLoading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const contractAddress = "0x35cDCc55E763986e97b90008cc4e7acF64D509e0";
+	const contractAddress = "0xfF830Cb36DFc8f636e97B1b9BF484F2AfFC32422";
 	const contractABI = abi.abi;
 
 	useEffect(() => {
 		checkIfWalletIsConnected();
+		getAllWaves();
+		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
 		if(currentAccount !== "") {
-			getWaveCount();
-			getAllWaves();
+			getWaveCount();		
 		}	
 		// eslint-disable-next-line
-	}, [currentAccount, waveCount])
+	}, [currentAccount])
+
+	useEffect(() => {
+		let wavePortalContract;
+	  
+		const onNewWave = (from, timestamp, message) => {
+		  console.log('NewWave', from, timestamp, message);
+		  setAllWaves(prevState => [
+			...prevState,
+			{
+			  address: from,
+			  timestamp: new Date(timestamp * 1000),
+			  message: message,
+			},
+		  ]);
+		};
+	  
+		if (window.ethereum) {
+		  const provider = new ethers.providers.Web3Provider(window.ethereum);
+		  const signer = provider.getSigner();
+	  
+		  wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+		  wavePortalContract.on('NewWave', onNewWave);
+		}
+	  
+		return () => {
+		  if (wavePortalContract) {
+			wavePortalContract.off('NewWave', onNewWave);
+		  }
+		};
+		// eslint-disable-next-line
+	  }, []);
 
 	const getAllWaves = async () => {
 		try {
@@ -134,7 +166,7 @@ function App() {
 				/*
 				* Execute the actual wave from your smart contract
 				*/
-				const waveTxn = await wavePortalContract.wave(message);
+				const waveTxn = await wavePortalContract.wave(message, { gasLimit: 300000 });
 				setMessage("")
 				console.log("Mining...", waveTxn.hash);
 		
@@ -179,7 +211,8 @@ function App() {
 		<div className="App">
 			<div className="app__title">
 				<img src={'https://ethereum.org/static/6b935ac0e6194247347855dc3d328e83/31987/eth-diamond-black.png'} className="App-logo" alt="logo" />
-				AJ's Wave Portal Frontend!
+				AJ's Wave Portal!
+				<div>よおこそ。将来は今です。</div>
 				{!currentAccount && (
 					<div>
 						<Button className="button" onClick={connectWallet}>
@@ -197,6 +230,7 @@ function App() {
 						Wave
 					</Button>
 				</div>
+				<div className="app__cooldownMsg">(30 sec cooldown)</div>
 			</div>
 			<div>
 			<div>Wave count: {waveCount}</div>
@@ -210,9 +244,9 @@ function App() {
 					)
 				})}
 			</div>
-				<div>
-					Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
-				</div>
+			<div className="app_bulidspace">
+				Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
+			</div>
 				
 			
 			
