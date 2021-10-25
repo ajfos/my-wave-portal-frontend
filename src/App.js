@@ -14,7 +14,7 @@ function App() {
 	const [isLoading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const contractAddress = "0xE872eba6bC57AeD126a426DC45ABb1d365B49e48";
+	const contractAddress = "0x35cDCc55E763986e97b90008cc4e7acF64D509e0";
 	const contractABI = abi.abi;
 
 	useEffect(() => {
