@@ -18,6 +18,11 @@
 
 .App-link {
   color: #61dafb;
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: yellow;
+  }
 }
 
 .button {

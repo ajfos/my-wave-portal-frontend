@@ -246,6 +246,7 @@ function App() {
 			</div>
 			<div className="app_bulidspace">
 				Built following a <a href="https://buildspace.so" target="_blank" rel="noreferrer" className="App-link">BuildSpace</a> project.
+				<div>Check out <a href="https://open.spotify.com/artist/1EnFvfSbHqACPmunlABTBJ" target="_blank" rel="noreferrer" className="App-link">my band</a> too yea?</div>
 			</div>
 				
 			
